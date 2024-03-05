@@ -1,41 +1,44 @@
 create table departments (
-	dept_no varchar primary key,
-	dept_name varchar unique not null
+	dept_no varchar(4) primary key not null,
+	dept_name varchar(50) unique not null
 );
 
 create table titles (
-	title_id varchar primary key,
-	title varchar
+	title_id varchar(5) primary key not null,
+	title varchar(50) not null
 );
 
 create table employees (
-	emp_no integer primary key, 
-	emp_title_id varchar references titles(title_id),
+	emp_no integer primary key not null, 
+	emp_title_id varchar(50) not null references titles(title_id),
 	foreign key (emp_title_id) references titles(title_id),
-	birth_date date,
-	first_name varchar,
-	last_name varchar,
-	sex varchar, 
-	hire_date date
+	birth_date date not null,
+	first_name varchar(50) not null,
+	last_name varchar(50) not null,
+	sex varchar(1) not null, 
+	hire_date date not null
 );
 
 create table dept_emp (
-	emp_no integer references employees(emp_no),
-	dept_no varchar references departments(dept_no),
+	emp_no integer not null,
+	dept_no varchar(50) references departments(dept_no),
+	primary key (emp_no, dept_no),
 	foreign key (emp_no) references employees(emp_no),
 	foreign key (dept_no) references departments(dept_no)
 );
 
 create table dept_managers (
-	dept_no varchar references departments(dept_no),
-	emp_no integer references employees(emp_no),
+	dept_no varchar(4) not null,
+	emp_no integer not null,
+	primary key (dept_no, emp_no),
 	foreign key (dept_no) references departments(dept_no),
 	foreign key (emp_no) references employees(emp_no)
 );
 
 create table salaries (
-	emp_no integer references employees(emp_no),
-	salary integer
+	emp_no integer primary key not null references employees(emp_no),
+	foreign key (emp_no) references employees(emp_no),
+	salary integer not null 
 );
 
 
@@ -139,8 +142,3 @@ select emp.last_name, count(*)
 from employees as emp
 group by emp.last_name
 order by count desc;
-
-
-
-
-
